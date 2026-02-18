@@ -57,12 +57,25 @@ When an AI agent tests code, it often needs to check server output for errors. W
 
 ## Install
 
+### Quick install (linux/macOS)
+
 ```bash
-cargo install capture-cli
+curl -fsSL https://raw.githubusercontent.com/AloisH/capture-cli/main/install.sh | sh
 ```
 
-## Build
+Installs a prebuilt binary to `/usr/local/bin`. Override with `INSTALL_DIR=~/.local/bin`.
+
+### From source
 
 ```bash
+git clone https://github.com/AloisH/capture-cli.git
+cd capture-cli
 cargo build --release
+# binary at target/release/capture
+```
+
+### Via cargo
+
+```bash
+cargo install capture-cli
 ```
