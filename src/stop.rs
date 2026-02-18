@@ -1,6 +1,6 @@
 use std::fs;
 
-use crate::meta::{capture_dir, Meta};
+use crate::meta::{base_dir, capture_dir, Meta};
 
 pub fn run(name: Option<&str>, all: bool) {
     if all {
@@ -26,7 +26,7 @@ fn stop_one(name: &str) {
 }
 
 fn stop_all() {
-    let base = capture_dir("").parent().unwrap().to_path_buf();
+    let base = base_dir();
     if !base.exists() {
         return;
     }

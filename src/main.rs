@@ -1,3 +1,4 @@
+mod list;
 mod logs;
 mod meta;
 mod start;
@@ -65,7 +66,7 @@ fn main() {
             logs::run(&name, lines, head, grep.as_deref(), follow, stderr);
         }
         Commands::List => {
-            println!("list");
+            list::run();
         }
         Commands::Stop { name, all } => {
             stop::run(name.as_deref(), all);
