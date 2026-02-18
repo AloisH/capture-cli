@@ -1,5 +1,7 @@
+mod logs;
 mod meta;
 mod start;
+mod stop;
 
 use clap::{Parser, Subcommand};
 
@@ -60,13 +62,13 @@ fn main() {
             start::run(&name, &command);
         }
         Commands::Logs { name, lines, head, grep, follow, stderr } => {
-            println!("logs: {name}");
+            logs::run(&name, lines, head, grep.as_deref(), follow, stderr);
         }
         Commands::List => {
             println!("list");
         }
         Commands::Stop { name, all } => {
-            println!("stop");
+            stop::run(name.as_deref(), all);
         }
     }
 }
