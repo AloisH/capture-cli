@@ -9,8 +9,7 @@ pub fn run(name: &str, command: &[String]) {
     let dir = capture_dir(name);
 
     if dir.exists() {
-        eprintln!("error: capture '{name}' already exists — stop it first");
-        std::process::exit(1);
+        fs::remove_dir_all(&dir).expect("failed to remove existing capture");
     }
 
     fs::create_dir_all(&dir).expect("failed to create capture dir");
