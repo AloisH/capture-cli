@@ -66,8 +66,47 @@ jobs:
           files: capture-*.tar.gz
           generate_release_notes: true
 
-  publish-npm:
-    needs: release
+  publish-npm-platform:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            pkg: capture-linux-x64
+          - target: aarch64-unknown-linux-gnu
+            pkg: capture-linux-arm64
+          - target: x86_64-apple-darwin
+            pkg: capture-darwin-x64
+          - target: aarch64-apple-darwin
+            pkg: capture-darwin-arm64
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: capture-${{ matrix.target }}
+
+      - name: Extract binary into package
+        run: |
+          tar xzf capture-${{ matrix.target }}.tar.gz -C npm/${{ matrix.pkg }}
+
+      - name: Publish platform package
+        working-directory: npm/${{ matrix.pkg }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          npm version "$VERSION" --no-git-tag-version
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-npm-base:
+    needs: publish-npm-platform
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -77,11 +116,18 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
-      - name: Publish to npm
-        working-directory: npm
+      - name: Publish base package
+        working-directory: npm/capture
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          npm version "$VERSION" --no-git-tag-version
-          npm publish
+          node -e "
+            const pkg = require('./package.json');
+            pkg.version = '$VERSION';
+            for (const dep of Object.keys(pkg.optionalDependencies)) {
+              pkg.optionalDependencies[dep] = '$VERSION';
+            }
+            require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

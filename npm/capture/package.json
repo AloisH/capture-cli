@@ -1,0 +1,20 @@
+{
+  "name": "@heloir/capture",
+  "version": "0.0.0",
+  "description": "Capture and replay CLI sessions for debugging",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AloisH/capture-cli"
+  },
+  "bin": {
+    "capture": "bin/capture"
+  },
+  "files": ["bin/"],
+  "optionalDependencies": {
+    "@heloir/capture-linux-x64": "0.0.0",
+    "@heloir/capture-linux-arm64": "0.0.0",
+    "@heloir/capture-darwin-x64": "0.0.0",
+    "@heloir/capture-darwin-arm64": "0.0.0"
+  }
+}

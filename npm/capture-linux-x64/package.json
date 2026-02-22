@@ -1,0 +1,13 @@
+{
+  "name": "@heloir/capture-linux-x64",
+  "version": "0.0.0",
+  "description": "Linux x64 binary for @heloir/capture",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AloisH/capture-cli"
+  },
+  "os": ["linux"],
+  "cpu": ["x64"],
+  "files": ["capture"]
+}

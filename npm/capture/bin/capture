@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+const { execFileSync } = require("child_process");
+const path = require("path");
+const os = require("os");
+
+const PLATFORMS = {
+  "linux-x64": "@heloir/capture-linux-x64",
+  "linux-arm64": "@heloir/capture-linux-arm64",
+  "darwin-x64": "@heloir/capture-darwin-x64",
+  "darwin-arm64": "@heloir/capture-darwin-arm64",
+};
+
+const key = `${os.platform()}-${os.arch()}`;
+const pkg = PLATFORMS[key];
+
+if (!pkg) {
+  console.error(`Unsupported platform: ${key}`);
+  process.exit(1);
+}
+
+let binary;
+try {
+  const pkgDir = path.dirname(require.resolve(`${pkg}/package.json`));
+  binary = path.join(pkgDir, "capture");
+} catch {
+  console.error(
+    `Missing platform package ${pkg}. Ensure optional dependencies are installed.`
+  );
+  process.exit(1);
+}
+
+try {
+  execFileSync(binary, process.argv.slice(2), { stdio: "inherit" });
+} catch (err) {
+  process.exit(err.status ?? 1);
+}

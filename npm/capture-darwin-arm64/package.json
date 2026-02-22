@@ -1,0 +1,13 @@
+{
+  "name": "@heloir/capture-darwin-arm64",
+  "version": "0.0.0",
+  "description": "macOS arm64 binary for @heloir/capture",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AloisH/capture-cli"
+  },
+  "os": ["darwin"],
+  "cpu": ["arm64"],
+  "files": ["capture"]
+}
