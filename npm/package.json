@@ -1,0 +1,21 @@
+{
+  "name": "capture-cli",
+  "version": "0.0.0",
+  "description": "Capture and replay CLI sessions for debugging",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AloisH/capture-cli"
+  },
+  "bin": {
+    "capture": "bin/capture"
+  },
+  "scripts": {
+    "postinstall": "node scripts/install.js"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "native/"
+  ]
+}
